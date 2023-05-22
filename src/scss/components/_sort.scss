@@ -1,4 +1,4 @@
-@import 'variables';
+@import '../variables';
 
 .sort {
   position: relative;
@@ -19,6 +19,10 @@
       border-bottom: 1px dashed $orange;
       cursor: pointer;
     }
+
+    @media (max-width: 1290px) {
+      margin-top: 20px;
+    }
   }
 
   &__popup {
@@ -30,7 +34,6 @@
     border-radius: 10px;
     overflow: hidden;
     padding: 10px 0;
-    width: 160px;
 
     ul {
       overflow: hidden;
