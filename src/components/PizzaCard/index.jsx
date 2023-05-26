@@ -2,6 +2,7 @@ import { useState } from 'react'
 import '../../scss/app.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItem } from '../../redux/slices/cartSlice'
+import { Link } from 'react-router-dom'
 
 const PizzaCard = ({ id, imageUrl, title, price, sizes, types }) => {
   const [activeType, setActiveType] = useState(0)
@@ -30,8 +31,10 @@ const PizzaCard = ({ id, imageUrl, title, price, sizes, types }) => {
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
-        <h4 className="pizza-block__title">{title}</h4>
-        <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+        <Link to={`pizza/${id}`}>
+          <h4 className="pizza-block__title">{title}</h4>
+          <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+        </Link>
         <div className="pizza-block__selector">
           <ul>
             {types.map((typeId) => (

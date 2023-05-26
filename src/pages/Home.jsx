@@ -4,7 +4,7 @@ import Sort, { listPopup } from '../components/Sort'
 import Skeleton from '../components/PizzaCard/Skeleton'
 import PizzaCard from '../components/PizzaCard/index'
 import qs from 'qs'
-import { useEffect, useContext, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   setCategoryId,
@@ -13,18 +13,17 @@ import {
 } from '../redux/slices/filterSlice'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../components/Pagination'
-import { SearchContext } from '../App'
 import { fetchPizzas } from '../redux/slices/apiPizzaSlice'
-import ErrorApiFetch from '../components/ErrorApiFetch'
+import ErrorApiFetch from '../components/ErrorApiFetch/ErrorApiFetch'
 
 const Home = () => {
-  const { searchValue } = useContext(SearchContext)
-  const { categoryId, currentPage, sort } = useSelector((state) => state.filter)
+  const { categoryId, currentPage, sort, searchValue } = useSelector(
+    (state) => state.filter
+  )
   const { items, status } = useSelector((state) => state.pizza)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const isSearch = useRef(false)
   const isMounted = useRef(false)
 
   const onChangeCategoryId = (id) => {
@@ -52,7 +51,7 @@ const Home = () => {
         })
       )
     } catch (error) {
-      console.log('error', error)
+      throw new Error(error.message)
     }
   }
 
@@ -89,17 +88,13 @@ const Home = () => {
           sort,
         })
       )
-      isSearch.current = true
     }
   }, [])
 
   // Если был первый рендер, то запрашиваем пиццы
   useEffect(() => {
     window.scrollTo(0, 200)
-    if (!isSearch.current) {
-      getPizzas()
-    }
-    isSearch.current = false
+    getPizzas()
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
   return (
