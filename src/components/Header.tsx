@@ -3,10 +3,15 @@ import logoPizza from '../assets/images/pizza-logo.svg'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import Search from './Search'
 import { useSelector } from 'react-redux'
+import { FC } from 'react'
+import { RootState } from '../redux/store'
 
-const Header = () => {
-  const { totalPrice, items } = useSelector((state) => state.cart)
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0)
+const Header: FC = () => {
+  const { totalPrice, items } = useSelector((state: RootState) => state.cart)
+  const totalCount = items.reduce(
+    (sum: number, item: any) => sum + item.count,
+    0
+  )
   const { pathname } = useLocation()
   const { id } = useParams()
   return (

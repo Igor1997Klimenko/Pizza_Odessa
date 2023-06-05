@@ -1,12 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { FC } from 'react'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import styles from './DescriptionPizza.module.scss'
 
-const DescriptionPizza = () => {
-  const [pizza, setPizza] = useState()
+const DescriptionPizza: FC = () => {
+  const [pizza, setPizza] = useState<{
+    imageUrl: string
+    title: string
+    price: number
+  }>()
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -18,7 +23,8 @@ const DescriptionPizza = () => {
         )
         setPizza(data)
       } catch (error) {
-        alert(error.message)
+        alert(error)
+
         navigate('/')
       }
     }
@@ -31,6 +37,7 @@ const DescriptionPizza = () => {
         <div className={styles.root}>
           <img src={pizza.imageUrl} alt={pizza.title} />
           <h2>{pizza.title}</h2>
+          <h4>{pizza.price} грн</h4>
           <span>
             <Link to="/" className="button button--black">
               Back

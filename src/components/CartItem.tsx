@@ -1,7 +1,31 @@
+import { FC } from 'react'
 import { useDispatch } from 'react-redux'
-import { removeItem, addItem, minusItem } from '../redux/slices/cartSlice'
+import {
+  removeItem,
+  addItem,
+  minusItem,
+  CartItem,
+} from '../redux/slices/cartSlice'
 
-const CartItem = ({ id, imageUrl, type, size, title, price, count }) => {
+type CartItemProps = {
+  id: string
+  imageUrl: string
+  type: string
+  size: number
+  title: string
+  price: number
+  count: number
+}
+
+const CartItemBlock: FC<CartItemProps> = ({
+  id,
+  imageUrl,
+  type,
+  size,
+  title,
+  price,
+  count,
+}) => {
   const dispatch = useDispatch()
 
   const onRemoveItem = () => {
@@ -11,11 +35,13 @@ const CartItem = ({ id, imageUrl, type, size, title, price, count }) => {
   }
 
   const onPlusItem = () => {
-    dispatch(addItem({ id }))
+    dispatch(addItem({ id } as CartItem))
   }
 
   const onMinusItem = () => {
-    dispatch(minusItem(id))
+    if (count > 1) {
+      dispatch(minusItem(id))
+    }
   }
 
   return (
@@ -30,7 +56,8 @@ const CartItem = ({ id, imageUrl, type, size, title, price, count }) => {
         </p>
       </div>
       <div className="cart__item-count">
-        <div
+        <button
+          disabled={count === 1}
           onClick={onMinusItem}
           className="button button--outline button--circle cart__item-count-minus"
         >
@@ -50,9 +77,9 @@ const CartItem = ({ id, imageUrl, type, size, title, price, count }) => {
               fill="#EB5A1E"
             ></path>
           </svg>
-        </div>
+        </button>
         <b>{count}</b>
-        <div
+        <button
           onClick={onPlusItem}
           className="button button--outline button--circle cart__item-count-plus"
         >
@@ -72,7 +99,7 @@ const CartItem = ({ id, imageUrl, type, size, title, price, count }) => {
               fill="#EB5A1E"
             ></path>
           </svg>
-        </div>
+        </button>
       </div>
       <div className="cart__item-price">
         <b>{price * count} грн</b>
@@ -104,4 +131,4 @@ const CartItem = ({ id, imageUrl, type, size, title, price, count }) => {
   )
 }
 
-export default CartItem
+export default CartItemBlock

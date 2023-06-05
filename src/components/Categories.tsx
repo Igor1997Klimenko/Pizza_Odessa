@@ -1,15 +1,21 @@
+import { FC } from 'react'
 import '../scss/app.scss'
 
-const Categories = ({ value, onClickCategory }) => {
-  const category = [
-    'Все',
-    'Мясные',
-    'Вегетарианская',
-    'Гриль',
-    'Острые',
-    'Закрытые',
-  ]
+type CategoriesProps = {
+  value: number
+  onClickCategory: (i: number) => void
+}
 
+const category = [
+  'Все',
+  'Мясные',
+  'Вегетарианская',
+  'Гриль',
+  'Острые',
+  'Закрытые',
+]
+
+const Categories: FC<CategoriesProps> = ({ value, onClickCategory }) => {
   return (
     <div className="categories">
       <ul>

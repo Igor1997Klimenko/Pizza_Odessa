@@ -1,31 +1,42 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, FC } from 'react'
 import '../scss/app.scss'
 import { useSelector, useDispatch } from 'react-redux'
-import { setSort } from '../redux/slices/filterSlice'
+import { setSort, SortPropertyEnum } from '../redux/slices/filterSlice'
+import { RootState } from '../redux/store'
 
-export const listPopup = [
-  { name: 'популярности(DESC)', sortProperty: 'rating' },
-  { name: 'популярности(ASC)', sortProperty: '-rating' },
-  { name: 'цене(DESC)', sortProperty: 'price' },
-  { name: 'цене(ASC)', sortProperty: '-price' },
-  { name: 'алфавиту(DESC)', sortProperty: 'title' },
-  { name: 'алфавиту(ASC)', sortProperty: '-title' },
+type SortItem = {
+  name: string
+  sortProperty: SortPropertyEnum
+}
+
+type PopupClick = MouseEvent & {
+  path: Node[]
+}
+
+export const listPopup: SortItem[] = [
+  { name: 'популярности(DESC)', sortProperty: SortPropertyEnum.RATING_DESC },
+  { name: 'популярности(ASC)', sortProperty: SortPropertyEnum.RATING_ASC },
+  { name: 'цене(DESC)', sortProperty: SortPropertyEnum.PRICE_DESC },
+  { name: 'цене(ASC)', sortProperty: SortPropertyEnum.PRICE_ASC },
+  { name: 'алфавиту(DESC)', sortProperty: SortPropertyEnum.TITLE_DESC },
+  { name: 'алфавиту(ASC)', sortProperty: SortPropertyEnum.TITLE_ASC },
 ]
 
-const Sort = () => {
+const SortPopup: FC = () => {
   const [isVisible, setIsVisible] = useState(false)
 
   const dispatch = useDispatch()
-  const sortValue = useSelector((state) => state.filter.sort)
-  const sortRef = useRef()
+  const sortValue = useSelector((state: RootState) => state.filter.sort)
+  const sortRef = useRef<HTMLDivElement>(null)
 
-  const onToogleListItem = (obj) => {
+  const onToogleListItem = (obj: SortItem) => {
     dispatch(setSort(obj))
     setIsVisible(false)
   }
 
-  const handleClickOutside = (e) => {
-    if (!e.composedPath().includes(sortRef.current)) {
+  const handleClickOutside = (e: MouseEvent) => {
+    const _e = e as MouseEvent & PopupClick
+    if (sortRef.current && !_e.composedPath().includes(sortRef.current)) {
       setIsVisible(false)
     }
   }
@@ -77,4 +88,4 @@ const Sort = () => {
   )
 }
 
-export default Sort
+export default SortPopup

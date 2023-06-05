@@ -5,8 +5,9 @@ import './scss/app.scss'
 import { Route, Routes } from 'react-router-dom'
 import Cart from './pages/Cart'
 import MainLayout from './components/MainLayout'
+import { FC } from 'react'
 
-const App = () => {
+const App: FC = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>

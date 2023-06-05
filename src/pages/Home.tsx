@@ -5,7 +5,7 @@ import Skeleton from '../components/PizzaCard/Skeleton'
 import PizzaCard from '../components/PizzaCard/index'
 import qs from 'qs'
 import { useEffect, useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import {
   setCategoryId,
   setCurrentPage,
@@ -13,24 +13,25 @@ import {
 } from '../redux/slices/filterSlice'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../components/Pagination'
-import { fetchPizzas } from '../redux/slices/apiPizzaSlice'
+import { fetchPizzas, SearchPizzaParams } from '../redux/slices/apiPizzaSlice'
 import ErrorApiFetch from '../components/ErrorApiFetch/ErrorApiFetch'
+import { RootState, useAppDispatch } from '../redux/store'
 
 const Home = () => {
   const { categoryId, currentPage, sort, searchValue } = useSelector(
-    (state) => state.filter
+    (state: RootState) => state.filter
   )
-  const { items, status } = useSelector((state) => state.pizza)
+  const { items, status } = useSelector((state: RootState) => state.pizza)
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const isMounted = useRef(false)
 
-  const onChangeCategoryId = (id) => {
+  const onChangeCategoryId = (id: number) => {
     dispatch(setCategoryId(id))
   }
 
-  const onChangePages = (page) => {
+  const onChangePages = (page: number) => {
     dispatch(setCurrentPage(page))
   }
 
@@ -43,15 +44,15 @@ const Home = () => {
 
       dispatch(
         fetchPizzas({
-          currentPage,
           sortBy,
           order,
           category,
           search,
+          currentPage: String(currentPage),
         })
       )
     } catch (error) {
-      throw new Error(error.message)
+      // throw new Error(error.message)
     }
   }
 
@@ -76,16 +77,18 @@ const Home = () => {
   // Если был первый рендер, то проверяем URL-параметры и сохраняем в Redux
   useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1))
+      const params = qs.parse(
+        window.location.search.substring(1)
+      ) as unknown as SearchPizzaParams
 
-      const sort = listPopup.find(
-        (obj) => obj.sortProperty === params.sortProperty
-      )
+      const sort = listPopup.find((obj) => obj.sortProperty === params.sortBy)
 
       dispatch(
         setFilters({
-          ...params,
-          sort,
+          searchValue: params.search,
+          categoryId: Number(params.category),
+          currentPage: Number(params.currentPage),
+          sort: sort || listPopup[0],
         })
       )
     }
@@ -93,7 +96,7 @@ const Home = () => {
 
   // Если был первый рендер, то запрашиваем пиццы
   useEffect(() => {
-    window.scrollTo(0, 200)
+    window.scrollTo(0, 0)
     getPizzas()
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
