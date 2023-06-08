@@ -1,11 +1,7 @@
 import { FC } from 'react'
 import { useDispatch } from 'react-redux'
-import {
-  removeItem,
-  addItem,
-  minusItem,
-  CartItem,
-} from '../redux/slices/cartSlice'
+import { removeItem, addItem, minusItem } from '../redux/cart/slice'
+import { CartItem } from '../redux/cart/types'
 
 type CartItemProps = {
   id: string
@@ -39,9 +35,7 @@ const CartItemBlock: FC<CartItemProps> = ({
   }
 
   const onMinusItem = () => {
-    if (count > 1) {
-      dispatch(minusItem(id))
-    }
+    dispatch(minusItem(id))
   }
 
   return (

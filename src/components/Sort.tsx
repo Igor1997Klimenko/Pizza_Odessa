@@ -1,8 +1,8 @@
-import { useRef, useState, useEffect, FC } from 'react'
+import { useRef, useState, useEffect, FC, memo } from 'react'
 import '../scss/app.scss'
-import { useSelector, useDispatch } from 'react-redux'
-import { setSort, SortPropertyEnum } from '../redux/slices/filterSlice'
-import { RootState } from '../redux/store'
+import { useDispatch } from 'react-redux'
+import { setSort } from '../redux/filter/slice'
+import { Sort, SortPropertyEnum } from '../redux/filter/types'
 
 type SortItem = {
   name: string
@@ -11,6 +11,10 @@ type SortItem = {
 
 type PopupClick = MouseEvent & {
   path: Node[]
+}
+
+type SortPopupProps = {
+  value: Sort
 }
 
 export const listPopup: SortItem[] = [
@@ -22,11 +26,9 @@ export const listPopup: SortItem[] = [
   { name: 'алфавиту(ASC)', sortProperty: SortPropertyEnum.TITLE_ASC },
 ]
 
-const SortPopup: FC = () => {
+const SortPopup: FC<SortPopupProps> = memo(({ value }) => {
   const [isVisible, setIsVisible] = useState(false)
-
   const dispatch = useDispatch()
-  const sortValue = useSelector((state: RootState) => state.filter.sort)
   const sortRef = useRef<HTMLDivElement>(null)
 
   const onToogleListItem = (obj: SortItem) => {
@@ -65,7 +67,7 @@ const SortPopup: FC = () => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setIsVisible(!isVisible)}>{sortValue.name}</span>
+        <span onClick={() => setIsVisible(!isVisible)}>{value.name}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">
@@ -75,7 +77,7 @@ const SortPopup: FC = () => {
                 key={i}
                 onClick={() => onToogleListItem(obj)}
                 className={
-                  sortValue.sortProperty === obj.sortProperty ? 'active' : ''
+                  value.sortProperty === obj.sortProperty ? 'active' : ''
                 }
               >
                 {obj.name}
@@ -86,6 +88,6 @@ const SortPopup: FC = () => {
       )}
     </div>
   )
-}
+})
 
 export default SortPopup

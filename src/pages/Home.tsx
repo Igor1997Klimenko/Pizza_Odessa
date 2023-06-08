@@ -4,32 +4,34 @@ import Sort, { listPopup } from '../components/Sort'
 import Skeleton from '../components/PizzaCard/Skeleton'
 import PizzaCard from '../components/PizzaCard/index'
 import qs from 'qs'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import {
   setCategoryId,
   setCurrentPage,
   setFilters,
-} from '../redux/slices/filterSlice'
+} from '../redux/filter/slice'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../components/Pagination'
-import { fetchPizzas, SearchPizzaParams } from '../redux/slices/apiPizzaSlice'
+import { fetchPizzas } from '../redux/pizza/asyncActions'
+import { SearchPizzaParams } from '../redux/pizza/types'
 import ErrorApiFetch from '../components/ErrorApiFetch/ErrorApiFetch'
-import { RootState, useAppDispatch } from '../redux/store'
+import { useAppDispatch } from '../redux/store'
+import { selectFilter } from '../redux/filter/selectors'
+import { selectApiPizzas } from '../redux/pizza/selectors'
 
 const Home = () => {
-  const { categoryId, currentPage, sort, searchValue } = useSelector(
-    (state: RootState) => state.filter
-  )
-  const { items, status } = useSelector((state: RootState) => state.pizza)
+  const { categoryId, currentPage, sort, searchValue } =
+    useSelector(selectFilter)
+  const { items, status } = useSelector(selectApiPizzas)
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const isMounted = useRef(false)
 
-  const onChangeCategoryId = (id: number) => {
-    dispatch(setCategoryId(id))
-  }
+  const onChangeCategoryId = useCallback((idx: number) => {
+    dispatch(setCategoryId(idx))
+  }, [])
 
   const onChangePages = (page: number) => {
     dispatch(setCurrentPage(page))
@@ -51,8 +53,8 @@ const Home = () => {
           currentPage: String(currentPage),
         })
       )
-    } catch (error) {
-      // throw new Error(error.message)
+    } catch (error: any) {
+      throw new Error(error.message)
     }
   }
 
@@ -92,6 +94,7 @@ const Home = () => {
         })
       )
     }
+    isMounted.current = true
   }, [])
 
   // Если был первый рендер, то запрашиваем пиццы
@@ -111,7 +114,7 @@ const Home = () => {
               value={categoryId}
               onClickCategory={onChangeCategoryId}
             />
-            <Sort />
+            <Sort value={sort} />
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">

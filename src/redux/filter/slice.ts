@@ -1,31 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-export enum SortPropertyEnum {
-  RATING_DESC = 'rating',
-  RATING_ASC = '-rating',
-  TITLE_DESC = 'title',
-  TITLE_ASC = '-title',
-  PRICE_DESC = 'price',
-  PRICE_ASC = '-price',
-}
-
-export type Sort = {
-  name: string
-  sortProperty: SortPropertyEnum
-}
-
-interface FilterSliceState {
-  searchValue: string
-  categoryId: number
-  currentPage: number
-  sort: Sort
-}
+import { FilterSliceState, Sort, SortPropertyEnum } from './types'
 
 const initialState: FilterSliceState = {
   searchValue: '',
   categoryId: 0,
   currentPage: 1,
-  sort: { name: 'популярности', sortProperty: SortPropertyEnum.PRICE_DESC },
+  sort: {
+    name: 'популярности(DESC)',
+    sortProperty: SortPropertyEnum.RATING_DESC,
+  },
 }
 
 export const filterSlice = createSlice({

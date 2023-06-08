@@ -1,9 +1,8 @@
-import { FC } from 'react'
-import '../scss/app.scss'
+import { FC, memo } from 'react'
 
 type CategoriesProps = {
   value: number
-  onClickCategory: (i: number) => void
+  onClickCategory: (idx: number) => void
 }
 
 const category = [
@@ -15,7 +14,7 @@ const category = [
   'Закрытые',
 ]
 
-const Categories: FC<CategoriesProps> = ({ value, onClickCategory }) => {
+const Categories: FC<CategoriesProps> = memo(({ value, onClickCategory }) => {
   return (
     <div className="categories">
       <ul>
@@ -31,6 +30,6 @@ const Categories: FC<CategoriesProps> = ({ value, onClickCategory }) => {
       </ul>
     </div>
   )
-}
+})
 
 export default Categories

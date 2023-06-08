@@ -1,9 +1,10 @@
 import { FC, useState } from 'react'
 import '../../scss/app.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { addItem, CartItem } from '../../redux/slices/cartSlice'
+import { CartItem } from '../../redux/cart/types'
+import { addItem } from '../../redux/cart/slice'
 import { Link } from 'react-router-dom'
-import { RootState } from '../../redux/store'
+import { selectCartItem } from '../../redux/cart/selectors'
 
 type PizzaCardProps = {
   id: string
@@ -27,9 +28,7 @@ const PizzaCard: FC<PizzaCardProps> = ({
   const dispatch = useDispatch()
   const typeName = ['тонкое', 'традиционное']
 
-  const cartItem = useSelector((state: RootState) =>
-    state.cart.items.find((obj) => obj.id === id)
-  )
+  const cartItem = useSelector(selectCartItem(id))
 
   const addedCount = cartItem ? cartItem.count : 0
 
@@ -50,8 +49,8 @@ const PizzaCard: FC<PizzaCardProps> = ({
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
         <Link to={`pizza/${id}`}>
-          <h4 className="pizza-block__title">{title}</h4>
           <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+          <h4 className="pizza-block__title">{title}</h4>
         </Link>
         <div className="pizza-block__selector">
           <ul>
