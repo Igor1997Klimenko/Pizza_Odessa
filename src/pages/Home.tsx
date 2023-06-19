@@ -1,8 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Categories from '../components/Categories'
-import Sort, { listPopup } from '../components/Sort'
-import Skeleton from '../components/PizzaCard/Skeleton'
-import PizzaCard from '../components/PizzaCard/index'
+import { listPopup } from '../components/Sort'
+import {
+  Skeleton,
+  PizzaCard,
+  Categories,
+  Sort,
+  ErrorApiFetch,
+  Pagination,
+} from '../components'
 import qs from 'qs'
 import { useCallback, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
@@ -12,10 +17,8 @@ import {
   setFilters,
 } from '../redux/filter/slice'
 import { useNavigate } from 'react-router-dom'
-import Pagination from '../components/Pagination'
 import { fetchPizzas } from '../redux/pizza/asyncActions'
 import { SearchPizzaParams } from '../redux/pizza/types'
-import ErrorApiFetch from '../components/ErrorApiFetch/ErrorApiFetch'
 import { useAppDispatch } from '../redux/store'
 import { selectFilter } from '../redux/filter/selectors'
 import { selectApiPizzas } from '../redux/pizza/selectors'

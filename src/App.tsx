@@ -1,13 +1,23 @@
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
-import DescriptionPizza from './components/DescriptionPizza/DescriptionPizza'
 import './scss/app.scss'
 import { Route, Routes } from 'react-router-dom'
-import Cart from './pages/Cart'
-import MainLayout from './components/MainLayout'
+import { MainLayout } from './components/MainLayout'
 import { FC } from 'react'
+import { Loading } from './components/Loading'
+import Loadable from 'react-loadable'
 
-const App: FC = () => {
+const Cart = Loadable({
+  loader: () => import('./pages/Cart'),
+  loading: () => <Loading />,
+})
+
+const DescriptionPizza = Loadable({
+  loader: () => import('./pages/Cart'),
+  loading: () => <Loading />,
+})
+
+export const App: FC = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
@@ -19,5 +29,3 @@ const App: FC = () => {
     </Routes>
   )
 }
-
-export default App

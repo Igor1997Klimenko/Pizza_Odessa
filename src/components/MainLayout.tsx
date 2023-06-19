@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { Outlet } from 'react-router-dom'
-import Header from './Header'
+import { Header } from './Header'
 
-const MainLayout: FC = () => {
+export const MainLayout: FC = () => {
   return (
     <div className="wrapper">
       <Header />
@@ -12,5 +12,3 @@ const MainLayout: FC = () => {
     </div>
   )
 }
-
-export default MainLayout

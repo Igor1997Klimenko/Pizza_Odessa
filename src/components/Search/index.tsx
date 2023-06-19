@@ -6,7 +6,7 @@ import { useCallback } from 'react'
 import { setSearchValue } from '../../redux/filter/slice'
 import { useDispatch } from 'react-redux'
 
-const Search: FC = () => {
+export const Search: FC = () => {
   const [value, setValue] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const dispatch = useDispatch()
@@ -66,5 +66,3 @@ const Search: FC = () => {
     </div>
   )
 }
-
-export default Search

@@ -15,7 +15,7 @@ type PizzaCardProps = {
   types: number[]
 }
 
-const PizzaCard: FC<PizzaCardProps> = ({
+export const PizzaCard: FC<PizzaCardProps> = ({
   id,
   imageUrl,
   title,
@@ -102,5 +102,3 @@ const PizzaCard: FC<PizzaCardProps> = ({
     </div>
   )
 }
-
-export default PizzaCard

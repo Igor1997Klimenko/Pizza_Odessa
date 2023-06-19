@@ -1,12 +1,12 @@
 import '../scss/app.scss'
 import logoPizza from '../assets/images/pizza-logo.svg'
 import { Link, useLocation, useParams } from 'react-router-dom'
-import Search from './Search'
+import { Search } from './Search'
 import { useSelector } from 'react-redux'
 import { FC, useEffect, useRef } from 'react'
 import { selectCart } from '../redux/cart/selectors'
 
-const Header: FC = () => {
+export const Header: FC = () => {
   const { totalPrice, items } = useSelector(selectCart)
   const totalCount = items.reduce(
     (sum: number, item: any) => sum + item.count,
@@ -82,5 +82,3 @@ const Header: FC = () => {
     </div>
   )
 }
-
-export default Header

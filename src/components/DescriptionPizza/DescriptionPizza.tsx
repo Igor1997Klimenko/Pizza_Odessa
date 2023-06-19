@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import styles from './DescriptionPizza.module.scss'
 
-const DescriptionPizza: FC = () => {
+export const DescriptionPizza: FC = () => {
   const [pizza, setPizza] = useState<{
     imageUrl: string
     title: string
@@ -33,7 +33,7 @@ const DescriptionPizza: FC = () => {
 
   return (
     <div className="container">
-      {pizza ? (
+      {pizza && (
         <div className={styles.root}>
           <img src={pizza.imageUrl} alt={pizza.title} />
           <h2>{pizza.title}</h2>
@@ -44,11 +44,7 @@ const DescriptionPizza: FC = () => {
             </Link>
           </span>
         </div>
-      ) : (
-        'Loading...'
       )}
     </div>
   )
 }
-
-export default DescriptionPizza
